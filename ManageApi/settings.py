@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'ManageApi',
     'rest_framework',
     'drf_yasg',
+    'users',
 ]
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
@@ -137,3 +138,4 @@ REST_FRAMEWORK = {
         # Аутентификация через JWT
     ),
 }
+AUTH_USER_MODEL = "users.CustomUser"

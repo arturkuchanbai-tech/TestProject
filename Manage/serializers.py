@@ -125,11 +125,15 @@
 #     class Meta:
 #         model = Gradefrom rest_framework import serializers
 
+from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
 from rest_framework import serializers
 from django.contrib.auth.password_validation import validate_password
 from rest_framework.exceptions import ValidationError
 from .models import Category, Tag, Todo, Comment, SubTask, Attachment, Grade
+
+User = get_user_model()
+
 class RegisterSerializer(serializers.ModelSerializer):
     password_1 = serializers.CharField(write_only = True, required=True, validators=[validate_password])
     password_2 = serializers.CharField(write_only =True,required=True )
@@ -148,7 +152,7 @@ class RegisterSerializer(serializers.ModelSerializer):
         return user
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
-        model = User
+        model = 'User'
         fiields = ['id','email','username']
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:

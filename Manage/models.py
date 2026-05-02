@@ -117,10 +117,13 @@
 #         return f'Grade - {self.grade}'
 
 
-
+from django.contrib.auth import get_user_model
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
+
+User = get_user_model()
+
 class Category(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField(blank=True)
