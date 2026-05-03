@@ -119,29 +119,36 @@
 
 from django.contrib.auth import get_user_model
 from django.db import models
-from django.contrib.auth.models import User
 from django.utils import timezone
+from users.models import CustomUser
+from common.models import BaseModel
 
 User = get_user_model()
 
-class Category(models.Model):
+class Category(BaseModel):
     name = models.CharField(max_length=255)
     description = models.TextField(blank=True)
 
     def __str__(self):
         return self.name
+    class Meta:
+        verbose_name="Category"
+        verbose_name_plural ="Categoris"
 class Tag(models.Model):
     name = models.CharField(max_length=255)
 
     def __str__(self):
         return self.name
+    class Meta:
+        verbose_name="Tag"
+        verbose_name_plural ="Tags"
     
 class Todo(models.Model):
     STATUS_CHOICES=[
         ('new', 'Новый'),
         ('progress','В процессе'),
-        ('done', 'Отмена'),
-        ('cancelled' ,'Завершено'),
+        ('done', 'Завершено'),
+        ('cancelled' ,'Отменено'),
     ]
     PRIORITY_CHOICES=[
         ('low','Низкий'),
@@ -180,6 +187,8 @@ class Todo(models.Model):
         return self.title
     class Meta:
         ordering = ['-created_at']
+        verbose_name="Todo"
+        verbose_name_plural ="Todos"
 class SubTask(models.Model):
     todo = models.ForeignKey(Todo, on_delete=models.CASCADE, related_name='subtasks')
     title = models.CharField(max_length=255)
@@ -187,6 +196,9 @@ class SubTask(models.Model):
     
     def __str__(self):
         return self.title
+    class Meta:
+        verbose_name="SubTask"
+        verbose_name_plural ="SubTasks"
 class Comment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_comments')
     todo = models.ForeignKey(Todo, on_delete=models.CASCADE, related_name='todo_comments')
@@ -195,7 +207,14 @@ class Comment(models.Model):
 
     def __str__(self):
         return self.text[:50]
+    
+    class Meta:
+        verbose_name="Comment"
+        verbose_name_plural ="Comments"
+
 class Grade(models.Model):
+    STARS = [(i, "⭐" * i )for i in range(1, 6)]
+    
     GRADE_CHOICES = [
     ('1/10', '1/10'),
     ('2/10', '2/10'),
@@ -209,19 +228,28 @@ class Grade(models.Model):
     ('10/10', '10/10'),
     ]
     todo = models.ForeignKey(Todo, on_delete=models.CASCADE, related_name='grades')
-    garade = models.CharField(choices=GRADE_CHOICES, default='1/10')
+    grade = models.CharField(choices=GRADE_CHOICES, default='1/10')
     comment = models.TextField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     def __str__(self):
-        return f' Grade - {self.garade}, Comment - {self.comment}'
+        return f' Grade - {self.grade}, Comment - {self.comment}'
     
+    class Meta:
+        verbose_name="Grade"
+        verbose_name_plural ="grades"
+
 class Attachment(models.Model):
     todo = models.ForeignKey(Todo, on_delete=models.CASCADE, related_name='attachments')
-    file = models.FileField(upload_to='attacment/')
+    file = models.FileField(upload_to='attachment/')
     uploaded = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.file.name
+    
+    class Meta:
+        verbose_name="Attachment"
+        verbose_name_plural ="Attachments"
+
 # from django.contrib.auth.models import User
 # from django.utils import timezone
 # class Category(models.Model):

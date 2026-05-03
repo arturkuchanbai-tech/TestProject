@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'drf_yasg',
     'users',
+    'common',
+   
 ]
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (

@@ -8,3 +8,4 @@ urlpatterns = [
     path("confirm/", ConfirmUserAPIView.as_view()),
     path("google-login/", GoogleLoginAPIView.as_view()),
 ]
+
